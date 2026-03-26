@@ -60,7 +60,6 @@
             box-shadow: 0px 6px 15px rgba(37, 211, 102, 0.5);
         }
 
-        /* Animação de pulsar */
         .whatsapp-float::before {
             content: '';
             position: absolute;
@@ -74,18 +73,9 @@
         }
 
         @keyframes pulse-green {
-            0% {
-                transform: scale(1);
-                opacity: 0.7;
-            }
-            70% {
-                transform: scale(1.4);
-                opacity: 0;
-            }
-            100% {
-                transform: scale(1);
-                opacity: 0;
-            }
+            0% { transform: scale(1); opacity: 0.7; }
+            70% { transform: scale(1.4); opacity: 0; }
+            100% { transform: scale(1); opacity: 0; }
         }
     </style>
 </head>
@@ -188,9 +178,11 @@
             </div>
             <div class="glass p-6 md:p-10 neon-border">
                 <form action="obrigado.html" method="GET" class="space-y-4 text-left">
-                    <input type="text" placeholder="Nome da clínica" class="w-full bg-white/5 border border-white/10 rounded-xl p-4 text-white text-sm outline-none focus:border-cyan-400">
-                    <input type="text" placeholder="WhatsApp" class="w-full bg-white/5 border border-white/10 rounded-xl p-4 text-white text-sm outline-none focus:border-cyan-400">
-                    <button class="cta-button-orange w-full py-5 rounded-xl font-black uppercase text-sm md:text-lg">Pedir Diagnóstico Grátis</button>
+                    <input type="text" name="nome" placeholder="Seu Nome" required class="w-full bg-white/5 border border-white/10 rounded-xl p-4 text-white text-sm outline-none focus:border-cyan-400 transition-all">
+                    <input type="text" name="empresa" placeholder="Nome da Clínica / Empresa" required class="w-full bg-white/5 border border-white/10 rounded-xl p-4 text-white text-sm outline-none focus:border-cyan-400 transition-all">
+                    <input type="tel" name="whatsapp" placeholder="WhatsApp" required class="w-full bg-white/5 border border-white/10 rounded-xl p-4 text-white text-sm outline-none focus:border-cyan-400 transition-all">
+                    <input type="email" name="email" placeholder="E-mail" required class="w-full bg-white/5 border border-white/10 rounded-xl p-4 text-white text-sm outline-none focus:border-cyan-400 transition-all">
+                    <button type="submit" class="cta-button-orange w-full py-5 rounded-xl font-black uppercase text-sm md:text-lg">Pedir Diagnóstico Grátis</button>
                 </form>
             </div>
         </div>
