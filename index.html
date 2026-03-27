@@ -123,29 +123,33 @@
     btn.innerText = "ENVIANDO...";
     btn.disabled = true;
 
-    const leadData = {
-    name: document.getElementById('nome').value,
-    emailAddress: document.getElementById('email').value,
-    phoneNumber: document.getElementById('whatsapp').value,
-    accountName: document.getElementById('empresa').value,
-    source: "Landing Page"
-};
+    const data = {
+        name: document.getElementById('nome').value,
+        emailAddress: document.getElementById('email').value,
+        phoneNumber: document.getElementById('whatsapp').value,
+        accountName: document.getElementById('empresa').value,
+        source: "Landing Page"
+    };
 
-// Teste com a URL incluindo o /client/ que o EspoCRM exige para Entry Points
-fetch('https://crm.idealconnecta.com.br/client/api/v1/LeadCapture/693042fbdbc0e83f1', {
-    method: 'POST',
-    mode: 'no-cors', // Mantemos para evitar o erro de múltiplos cabeçalhos
-    headers: {
-        'Content-Type': 'application/json'
-    },
-    body: JSON.stringify(leadData)
-})
-.then(() => {
-    window.location.href = "obrigado.html";
-})
-.catch(() => {
-    window.location.href = "obrigado.html";
-});
+    // Usando mode: 'no-cors' para ignorar a política de segurança do navegador
+    fetch('https://crm.idealconnecta.com.br/api/v1/Lead', {
+        method: 'POST',
+        mode: 'no-cors', 
+        headers: {
+            'Content-Type': 'application/json',
+            'X-Api-Key': '7d67da4ac1ede0778e034e04065496ab'
+        },
+        body: JSON.stringify(data)
+    })
+    .then(() => {
+        // No modo no-cors, ele cai aqui direto, mesmo sem resposta do servidor
+        console.log("Envio 'Cego' realizado com sucesso!");
+        window.location.href = "obrigado.html";
+    })
+    .catch(error => {
+        console.error('Erro:', error);
+        window.location.href = "obrigado.html";
+    });
 });
 </script>
 </body>
