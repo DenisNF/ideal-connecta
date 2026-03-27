@@ -123,25 +123,22 @@
     btn.innerText = "ENVIANDO...";
     btn.disabled = true;
 
-    const leadData = {
-    name: document.getElementById('nome').value,
-    emailAddress: document.getElementById('email').value,
-    phoneNumber: document.getElementById('whatsapp').value,
-    accountName: document.getElementById('empresa').value,
-    source: "Landing Page"
-};
+    const formData = new URLSearchParams();
+formData.append('name', document.getElementById('nome').value);
+formData.append('emailAddress', document.getElementById('email').value);
+formData.append('phoneNumber', document.getElementById('whatsapp').value);
+formData.append('accountName', document.getElementById('empresa').value);
 
-// SUBSTITUA 'SEU_ID_AQUI' PELO ID QUE VOCÊ PEGOU NO ESPOCRM
 fetch('https://crm.idealconnecta.com.br/api/v1/LeadCapture/693042fbdbc0e83f1', {
     method: 'POST',
-    mode: 'cors', 
+    mode: 'no-cors', // Força o envio "cego" para ignorar o erro de múltiplos cabeçalhos
     headers: {
-        'Content-Type': 'application/json'
+        'Content-Type': 'application/x-www-form-urlencoded'
     },
-    body: JSON.stringify(leadData)
+    body: formData.toString()
 })
-.then(response => {
-    console.log('Status Espo:', response.status);
+.then(() => {
+    // Como é 'no-cors', não conseguimos ler a resposta, mas o dado é enviado
     window.location.href = "obrigado.html";
 })
 .catch(() => {
