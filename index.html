@@ -123,27 +123,26 @@
         btn.innerText = "ENVIANDO...";
         btn.disabled = true;
 
-        const data = {
-    name: document.getElementById('nome').value,
-    emailAddress: document.getElementById('email').value,
-    phoneNumber: document.getElementById('whatsapp').value,
-    accountName: document.getElementById('empresa').value
-};
+        const formData = new URLSearchParams();
+formData.append('name', document.getElementById('nome').value);
+formData.append('emailAddress', document.getElementById('email').value);
+formData.append('phoneNumber', document.getElementById('whatsapp').value);
+formData.append('accountName', document.getElementById('empresa').value);
 
-fetch('https://crm.idealconnecta.com.br/api/v1/leads', {
+fetch('https://crm.idealconnecta.com.br/api/v1/leads', { // Tente com /leads ou /contacts
     method: 'POST',
     headers: {
-        'Content-Type': 'application/json',
-        'X-Api-Key': '7d67da4ac1ede0778e034e04065496ab'
+        'X-Api-Key': '7d67da4ac1ede0778e034e04065496ab',
+        'Content-Type': 'application/x-www-form-urlencoded'
     },
-    body: JSON.stringify(data)
+    body: formData.toString()
 })
 .then(response => {
-    // Redireciona para a página de obrigado após o envio
+    console.log('Status do CRM:', response.status);
     window.location.href = "obrigado.html";
 })
 .catch(error => {
-    console.error('Erro ao enviar:', error);
+    console.error('Erro de conexão:', error);
     window.location.href = "obrigado.html";
 });
     });
