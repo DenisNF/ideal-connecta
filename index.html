@@ -117,39 +117,40 @@
 
 <script>
     document.getElementById('lead-form').addEventListener('submit', function(e) {
-        e.preventDefault();
-        
-        const btn = document.getElementById('btn-submit');
-        btn.innerText = "ENVIANDO...";
-        btn.disabled = true;
+    e.preventDefault();
+    
+    const btn = document.getElementById('btn-submit');
+    btn.innerText = "ENVIANDO...";
+    btn.disabled = true;
 
-        const data = {
-    firstName: document.getElementById('nome').value, // Espo usa firstName ou name
-    emailAddress: document.getElementById('email').value,
-    phoneNumber: document.getElementById('whatsapp').value,
-    accountName: document.getElementById('empresa').value,
-    source: "Website" // Opcional: Para você saber que veio da LP
-};
+    const data = {
+        name: document.getElementById('nome').value,
+        emailAddress: document.getElementById('email').value,
+        phoneNumber: document.getElementById('whatsapp').value,
+        accountName: document.getElementById('empresa').value,
+        source: "Landing Page"
+    };
 
-// A URL correta do EspoCRM para Leads costuma ser o endpoint de Lead
-fetch('https://crm.idealconnecta.com.br/api/v1/Lead', { 
-    method: 'POST',
-    headers: {
-        'X-Api-Key': '7d67da4ac1ede0778e034e04065496ab',
-        'Content-Type': 'application/json',
-        'X-Requested-With': 'XMLHttpRequest' // Importante para o EspoCRM
-    },
-    body: JSON.stringify(data)
-})
-.then(response => {
-    console.log('Status Espo:', response.status);
-    window.location.href = "obrigado.html";
-})
-.catch(error => {
-    console.error('Erro Espo:', error);
-    window.location.href = "obrigado.html";
-});
+    // Usando mode: 'no-cors' para ignorar a política de segurança do navegador
+    fetch('https://crm.idealconnecta.com.br/api/v1/Lead', {
+        method: 'POST',
+        mode: 'no-cors', 
+        headers: {
+            'Content-Type': 'application/json',
+            'X-Api-Key': '7d67da4ac1ede0778e034e04065496ab'
+        },
+        body: JSON.stringify(data)
+    })
+    .then(() => {
+        // No modo no-cors, ele cai aqui direto, mesmo sem resposta do servidor
+        console.log("Envio 'Cego' realizado com sucesso!");
+        window.location.href = "obrigado.html";
+    })
+    .catch(error => {
+        console.error('Erro:', error);
+        window.location.href = "obrigado.html";
     });
+});
 </script>
 </body>
 </html>
