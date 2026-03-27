@@ -57,7 +57,7 @@
     <div class="text-lg md:text-2xl font-black italic uppercase truncate mr-2">IDEAL<span class="text-brand font-light lowercase">Connecta</span></div>
     <a href="https://wa.me/553136140050" class="bg-[#25D366] text-white px-4 py-2 rounded-full text-[10px] md:text-xs font-bold uppercase hover:opacity-90 transition-all flex-shrink-0">Falar no WhatsApp</a>
 </nav>
-
+      
     <header class="container mx-auto px-6 py-16 md:py-32">
         <div class="grid md:grid-cols-12 gap-12 items-center">
             <div class="md:col-span-7 text-center md:text-left">
@@ -104,26 +104,49 @@
                 <p class="text-slate-400 text-lg mb-8">Analisaremos seu fluxo e mostraremos onde você está perdendo dinheiro.</p>
             </div>
             <div class="glass p-8 md:p-12 neon-border-brand">
-                <form id="lead-form" action="https://crm.idealconnecta.com.br/api/leads" method="POST" class="space-y-5">
-                    <input type="text" name="nome" placeholder="Seu Nome" required class="w-full bg-white/5 border border-white/10 rounded-2xl p-5 text-white text-sm outline-none focus:border-brand transition-all">
-                    <input type="text" name="empresa" placeholder="Nome da Clínica / Empresa" required class="w-full bg-white/5 border border-white/10 rounded-2xl p-5 text-white text-sm outline-none focus:border-brand transition-all">
-                    <input type="tel" name="whatsapp" placeholder="WhatsApp (DDD)" required class="w-full bg-white/5 border border-white/10 rounded-2xl p-5 text-white text-sm outline-none focus:border-brand transition-all">
-                    <input type="email" name="email" placeholder="E-mail Corporativo" required class="w-full bg-white/5 border border-white/10 rounded-2xl p-5 text-white text-sm outline-none focus:border-brand transition-all">
-                    <button type="submit" class="cta-button-brand w-full py-6 rounded-2xl font-black uppercase text-lg">Pedir Diagnóstico Grátis</button>
-                </form>
-            </div>
-        </div>
-    </main>
+                <form id="lead-form" class="space-y-5">
+    <input type="text" id="nome" name="nome" placeholder="Seu Nome" required class="w-full bg-white/5 border border-white/10 rounded-2xl p-5 text-white text-sm outline-none focus:border-brand transition-all">
+    <input type="text" id="empresa" name="empresa" placeholder="Nome da Clínica / Empresa" required class="w-full bg-white/5 border border-white/10 rounded-2xl p-5 text-white text-sm outline-none focus:border-brand transition-all">
+    <input type="tel" id="whatsapp" name="whatsapp" placeholder="WhatsApp (DDD)" required class="w-full bg-white/5 border border-white/10 rounded-2xl p-5 text-white text-sm outline-none focus:border-brand transition-all">
+    <input type="email" id="email" name="email" placeholder="E-mail Corporativo" required class="w-full bg-white/5 border border-white/10 rounded-2xl p-5 text-white text-sm outline-none focus:border-brand transition-all">
+    
+    <button type="submit" id="btn-submit" class="cta-button-brand w-full py-6 rounded-2xl font-black uppercase text-lg">
+        Pedir Diagnóstico Grátis
+    </button>
+</form>
 
-    <footer class="bg-black py-16 border-t border-white/5 text-center px-6">
-        <div class="text-2xl font-black italic uppercase mb-6">IDEAL<span class="text-brand font-light lowercase">Connecta</span></div>
-        <p class="text-gray-500 text-xs tracking-widest uppercase">&copy; 2026 IDEAL CONNECTA LTDA. Todos os direitos reservados.</p>
-    </footer>
+<script>
+    document.getElementById('lead-form').addEventListener('submit', function(e) {
+        e.preventDefault();
+        
+        const btn = document.getElementById('btn-submit');
+        btn.innerText = "ENVIANDO...";
+        btn.disabled = true;
 
-    <script>
-        document.getElementById('lead-form').onsubmit = function() {
-            setTimeout(function() { window.location.href = "obrigado.html"; }, 800);
+        const data = {
+            nome: document.getElementById('nome').value,
+            empresa: document.getElementById('empresa').value,
+            whatsapp: document.getElementById('whatsapp').value,
+            email: document.getElementById('email').value
         };
-    </script>
+
+        fetch('https://crm.idealconnecta.com.br/api/v1/leads', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                'X-Api-Key': '7d67da4ac1ede0778e034e04065496ab'
+            },
+            body: JSON.stringify(data)
+        })
+        .then(response => {
+            // Independente de erro na API (CORS), vamos redirecionar para não travar o cliente
+            window.location.href = "obrigado.html";
+        })
+        .catch(error => {
+            console.error('Erro:', error);
+            window.location.href = "obrigado.html";
+        });
+    });
+</script>
 </body>
 </html>
