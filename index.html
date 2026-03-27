@@ -123,28 +123,29 @@
         btn.innerText = "ENVIANDO...";
         btn.disabled = true;
 
-        const formData = new FormData();
-formData.append('nome', document.getElementById('nome').value);
-formData.append('empresa', document.getElementById('empresa').value);
-formData.append('whatsapp', document.getElementById('whatsapp').value);
-formData.append('email', document.getElementById('email').value);
+        const data = {
+    name: document.getElementById('nome').value,
+    emailAddress: document.getElementById('email').value,
+    phoneNumber: document.getElementById('whatsapp').value,
+    accountName: document.getElementById('empresa').value
+};
 
 fetch('https://crm.idealconnecta.com.br/api/v1/leads', {
     method: 'POST',
     headers: {
+        'Content-Type': 'application/json',
         'X-Api-Key': '7d67da4ac1ede0778e034e04065496ab'
-        // Remova o Content-Type: application/json aqui
     },
-    body: formData
+    body: JSON.stringify(data)
 })
-        .then(response => {
-            // Independente de erro na API (CORS), vamos redirecionar para não travar o cliente
-            window.location.href = "obrigado.html";
-        })
-        .catch(error => {
-            console.error('Erro:', error);
-            window.location.href = "obrigado.html";
-        });
+.then(response => {
+    // Redireciona para a página de obrigado após o envio
+    window.location.href = "obrigado.html";
+})
+.catch(error => {
+    console.error('Erro ao enviar:', error);
+    window.location.href = "obrigado.html";
+});
     });
 </script>
 </body>
