@@ -107,7 +107,7 @@
                 <form id="lead-form" class="space-y-5">
     <input type="text" id="nome" name="nome" placeholder="Seu Nome" required class="w-full bg-white/5 border border-white/10 rounded-2xl p-5 text-white text-sm outline-none focus:border-brand transition-all">
     <input type="text" id="empresa" name="empresa" placeholder="Nome da Clínica / Empresa" required class="w-full bg-white/5 border border-white/10 rounded-2xl p-5 text-white text-sm outline-none focus:border-brand transition-all">
-    <input type="tel" id="whatsapp" name="whatsapp" placeholder="WhatsApp (DDD)" required class="w-full bg-white/5 border border-white/10 rounded-2xl p-5 text-white text-sm outline-none focus:border-brand transition-all">
+    <input type="tel" id="phone-lead" name="whatsapp" placeholder="WhatsApp (DDD)" required class="w-full bg-white/5 border border-white/10 rounded-2xl p-5 text-white text-sm outline-none focus:border-brand transition-all">
     <input type="email" id="email" name="email" placeholder="E-mail Corporativo" required class="w-full bg-white/5 border border-white/10 rounded-2xl p-5 text-white text-sm outline-none focus:border-brand transition-all">
     
     <button type="submit" id="btn-submit" class="cta-button-brand w-full py-6 rounded-2xl font-black uppercase text-lg">
@@ -123,15 +123,17 @@
     btn.innerText = "ENVIANDO...";
     btn.disabled = true;
 
-    const data = {
-        name: document.getElementById('nome').value,
-        emailAddress: document.getElementById('email').value,
-        phoneNumber: document.getElementById('whatsapp').value,
-        accountName: document.getElementById('empresa').value,
-        source: "Landing Page"
-    };
+    // No HTML do formulário:
+// <input type="tel" id="phone-lead" ...>
 
-    // Usando mode: 'no-cors' para ignorar a política de segurança do navegador
+// No seu Script atualizado:
+const data = {
+    name: document.getElementById('nome').value,
+    emailAddress: document.getElementById('email').value,
+    phoneNumber: document.getElementById('phone-lead').value, // ID atualizado aqui
+    accountName: document.getElementById('empresa').value,
+    source: "Landing Page"
+};
     fetch('https://crm.idealconnecta.com.br/api/v1/Lead', {
         method: 'POST',
         mode: 'no-cors', 
@@ -142,15 +144,25 @@
         body: JSON.stringify(data)
     })
     .then(() => {
-        // No modo no-cors, ele cai aqui direto, mesmo sem resposta do servidor
-        console.log("Envio 'Cego' realizado com sucesso!");
-        window.location.href = "obrigado.html";
+        // DISPARO PARA O GTM
+        window.dataLayer = window.dataLayer || [];
+        window.dataLayer.push({
+            'event': 'form_submission_success'
+        });
+
+        console.log("Evento enviado ao GTM!");
+        
+        // Espera meio segundo para o GTM processar antes de mudar de página
+        setTimeout(() => {
+            window.location.href = "obrigado.html";
+        }, 500);
     })
     .catch(error => {
         console.error('Erro:', error);
+        // Mesmo em erro, enviamos para a página de obrigado para não travar o usuário
         window.location.href = "obrigado.html";
     });
 });
-</script>
-</body>
+
+</script> </body>
 </html>
