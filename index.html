@@ -128,12 +128,12 @@ const data = {
     accountName: document.getElementById('empresa').value,
     source: "Landing Page"
 };
-    fetch('https://crm.idealconnecta.com.br/api/v1/Lead', {
+    fetch('https://n8n.ideal.ia.br/webhook/crmdenis', {
         method: 'POST',
         mode: 'no-cors', 
         headers: {
             'Content-Type': 'application/json',
-            'X-Api-Key': '7d67da4ac1ede0778e034e04065496ab'
+            
         },
         body: JSON.stringify(data)
     })
